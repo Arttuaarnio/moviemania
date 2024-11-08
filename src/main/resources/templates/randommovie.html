@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Random Movie</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <h2>Here's a random movie for you!</h2>
+    
+    <div th:if="${movie != null}">
+        <h3>Title: <span th:text="${movie.title}"></span></h3>
+        <p>Director: <span th:text="${movie.director}"></span></p>
+        <p>Release Year: <span th:text="${movie.releaseyear}"></span></p>
+        <p>Description: <span th:text="${movie.description}"></span></p>
+    </div>
+    
+    <div th:if="${movie == null}">
+        <p>No movies available to display. Check back later!</p>
+    </div>
+
+    <p><a th:href="@{/movielist}">Back to Movie List</a></p>
+</body>
+</html>
