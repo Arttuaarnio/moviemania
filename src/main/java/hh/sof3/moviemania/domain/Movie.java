@@ -1,53 +1,44 @@
 package hh.sof3.moviemania.domain;
 
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long movieid;
+    private Long movieId;
     private String title;
     private String director;
-    private Integer releaseyear;
+    private Integer releaseYear;
+
+    @Column(length = 1000) // allows longer descriptions
     private String description;
-    private String review;
+    
+    private String photo; //URL for movie poster
 
-    @ManyToMany
-    @JoinTable(name = "movie_genre", joinColumns = @JoinColumn(name = "movieid"), inverseJoinColumns = @JoinColumn(name= "genreid"))
-    @JsonIgnoreProperties("movies")
-    private Set<Genre> genre;
+    public Movie() {
+    }
 
-    public Movie(String title, String director, Integer releaseyear, String description, String review, Set<Genre> genre) {
+    public Movie(String title, String director, Integer releaseYear, String description, String photo) {
         this.title = title;
         this.director = director;
-        this.releaseyear = releaseyear;
+        this.releaseYear = releaseYear;
         this.description = description;
-        this.review = review;
-        this.genre = genre;
+        this.photo = photo;
     }
 
-    public Movie(){
-
+    // Getters and Setters
+    public Long getMovieId() {
+        return movieId;
     }
 
-    public Long getMovieid() {
-        return movieid;
-    }
-
-    public void setMovieid(Long movieid) {
-        this.movieid = movieid;
+    public void setMovieId(Long movieId) {
+        this.movieId = movieId;
     }
 
     public String getTitle() {
@@ -66,12 +57,12 @@ public class Movie {
         this.director = director;
     }
 
-    public Integer getReleaseyear() {
-        return releaseyear;
+    public Integer getReleaseYear() {
+        return releaseYear;
     }
 
-    public void setReleaseyear(Integer releaseyear) {
-        this.releaseyear = releaseyear;
+    public void setReleaseYear(Integer releaseYear) {
+        this.releaseYear = releaseYear;
     }
 
     public String getDescription() {
@@ -82,26 +73,23 @@ public class Movie {
         this.description = description;
     }
 
-    public String getReview() {
-        return review;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setReview(String review) {
-        this.review = review;
-    }
-
-    public Set<Genre> getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Set<Genre> genre) {
-        this.genre = genre;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     @Override
     public String toString() {
-        return "movieid = " + movieid + ", title = " + title + "director = " + director + ", releaseyear = " + releaseyear + ", description = "
-                + description + ", review = " + review + ", genre = " + genre;
+        return "Movie{" +
+                "movieId=" + movieId +
+                ", title='" + title + '\'' +
+                ", director='" + director + '\'' +
+                ", releaseYear=" + releaseYear +
+                ", description='" + description + '\'' +
+                ", photo='" + photo + '\'' +
+                '}';
     }
-    
 }
