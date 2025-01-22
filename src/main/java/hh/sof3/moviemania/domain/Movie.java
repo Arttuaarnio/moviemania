@@ -13,7 +13,6 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movieId;
     private String title;
-    private String director;
     private Integer releaseYear;
 
     @Column(length = 1000) // allows longer descriptions
@@ -24,9 +23,8 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(String title, String director, Integer releaseYear, String description, String photo) {
+    public Movie(String title, Integer releaseYear, String description, String photo) {
         this.title = title;
-        this.director = director;
         this.releaseYear = releaseYear;
         this.description = description;
         this.photo = photo;
@@ -47,14 +45,6 @@ public class Movie {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getDirector() {
-        return director;
-    }
-
-    public void setDirector(String director) {
-        this.director = director;
     }
 
     public Integer getReleaseYear() {
@@ -86,7 +76,6 @@ public class Movie {
         return "Movie{" +
                 "movieId=" + movieId +
                 ", title='" + title + '\'' +
-                ", director='" + director + '\'' +
                 ", releaseYear=" + releaseYear +
                 ", description='" + description + '\'' +
                 ", photo='" + photo + '\'' +
