@@ -35,12 +35,12 @@ public class MovieRestController {
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
 
         // Save the movie if it doesn't exist
-        if (!mrepo.existsByTitleAndReleaseyear(movie.getTitle(), movie.getReleaseYear())) {
+        if (!mrepo.existsByTitleAndReleaseYear(movie.getTitle(), movie.getReleaseYear())) {
             mrepo.save(movie);
         }
 
         // Find the saved movie
-        Movie savedMovie = mrepo.findByTitleAndReleaseyear(movie.getTitle(), movie.getReleaseYear())
+        Movie savedMovie = mrepo.findByTitleAndReleaseYear(movie.getTitle(), movie.getReleaseYear())
                 .orElseThrow(() -> new RuntimeException("Failed to save or find the movie"));
                 
         // Add the movie to user's favorites

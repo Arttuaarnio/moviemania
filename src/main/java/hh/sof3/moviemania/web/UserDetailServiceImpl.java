@@ -1,6 +1,7 @@
 package hh.sof3.moviemania.web;
 
-import org.springframework.security.core.authority.AuthorityUtils;
+import java.util.ArrayList;
+
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,27 +12,28 @@ import hh.sof3.moviemania.domain.AppUser;
 import hh.sof3.moviemania.domain.AppUserRepository;
 
 @Service
-public class UserDetailServiceImpl implements UserDetailsService{
+public class UserDetailServiceImpl implements UserDetailsService {
 
     private final AppUserRepository repository;
 
-    // @Autowired
-    public UserDetailServiceImpl(AppUserRepository userRepository) {
-        this.repository = userRepository;
+    public UserDetailServiceImpl(AppUserRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser curruser = repository.findByUsername(username);
-        UserDetails user = new User(username, curruser.getPasswordHash(),
-                AuthorityUtils.createAuthorityList(curruser.getRole()));
+        // Retrieve the user from the database
+        AppUser appUser = repository.findByUsername(username);
 
-        /*
-         * UserDetails user = new
-         * org.springframework.security.core.userdetails.User(username,
-         * curruser.getPasswordHash(),
-         * AuthorityUtils.createAuthorityList(curruser.getRole()));
-         */
-        return user;
+        if (appUser == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+
+        // Return UserDetails without using roles
+        return new User(
+                appUser.getUsername(),
+                appUser.getPasswordHash(),
+                new ArrayList<>() // Empty list since no roles are used
+        );
     }
 }

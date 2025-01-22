@@ -27,9 +27,6 @@ public class AppUser {
     @Column(name = "password", nullable = false)
     private String passwordHash;
 
-    @Column(name = "role", nullable = false)
-    private String role;
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "user_favorite_movies",
@@ -46,7 +43,6 @@ public class AppUser {
         super();
         this.username = username;
         this.passwordHash = passwordHash;
-        this.role = role;
     }
 
     public long getId() {
@@ -71,14 +67,6 @@ public class AppUser {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public List<Movie> getFavoriteMovies() {

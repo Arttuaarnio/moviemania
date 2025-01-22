@@ -7,9 +7,9 @@ import org.springframework.data.repository.CrudRepository;
 public interface MovieRepository extends CrudRepository<Movie, Long> {
 
     // Checks for an existing movie by title and release year
-    boolean existsByTitleAndReleaseyear(String title, Integer releaseyear);
+    boolean existsByTitleAndReleaseYear(String title, Integer releaseYear);
 
     // Finds a movie by the title and release year
-    Optional<Movie> findByTitleAndReleaseyear(String title, Integer releaseyear);
+    Optional<Movie> findByTitleAndReleaseYear(String title, Integer releaseYear);
 
 }

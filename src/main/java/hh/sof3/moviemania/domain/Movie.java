@@ -19,7 +19,7 @@ public class Movie {
     @Column(length = 1000) // allows longer descriptions
     private String description;
     
-    private String photo; //URL for movie poster
+    private String photo; // URL for the movie poster
 
     public Movie() {
     }
