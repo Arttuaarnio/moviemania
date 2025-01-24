@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Transient;
 
 @Entity(name ="users")
 public class AppUser {
@@ -27,6 +28,9 @@ public class AppUser {
     @Column(name = "password", nullable = false)
     private String passwordHash;
 
+    @Transient
+    private String password; // Raw password, not stored in the database
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "user_favorite_movies",
@@ -39,7 +43,7 @@ public class AppUser {
 
     }
 
-    public AppUser(String username, String passwordHash, String role) {
+    public AppUser(String username, String passwordHash) {
         super();
         this.username = username;
         this.passwordHash = passwordHash;
@@ -69,6 +73,14 @@ public class AppUser {
         this.passwordHash = passwordHash;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public List<Movie> getFavoriteMovies() {
         return favoriteMovies;
     }
@@ -76,7 +88,5 @@ public class AppUser {
     public void setFavoriteMovies(List<Movie> favoriteMovies) {
         this.favoriteMovies = favoriteMovies;
     }
-
-    
     
 }

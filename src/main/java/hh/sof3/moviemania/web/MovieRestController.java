@@ -42,7 +42,12 @@ public class MovieRestController {
         // Find the saved movie
         Movie savedMovie = mrepo.findByTitleAndReleaseYear(movie.getTitle(), movie.getReleaseYear())
                 .orElseThrow(() -> new RuntimeException("Failed to save or find the movie"));
-                
+
+        // Check if the movie is already in the user's favorites
+        if (user.getFavoriteMovies().contains(savedMovie)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie is already in the user's favorites");
+        }
+
         // Add the movie to user's favorites
         user.getFavoriteMovies().add(savedMovie);
         urepo.save(user);
@@ -69,13 +74,15 @@ public class MovieRestController {
         Movie movie = mrepo.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("Movie not found with ID: " + movieId));
 
-        // Remove the movie from user's favorites
-        if (user.getFavoriteMovies().contains(movie)) {
-            user.getFavoriteMovies().remove(movie);
-            urepo.save(user);
-            return ResponseEntity.ok("Movie removed from favorites");
-        } else {
+        // Check if the movie is in the user's favorites
+        if (!user.getFavoriteMovies().contains(movie)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie is not in the user's favorites");
         }
+
+        // Remove the movie from user's favorites
+        user.getFavoriteMovies().remove(movie);
+        urepo.save(user);
+
+        return ResponseEntity.ok("Movie removed from favorites");
     }
 }
