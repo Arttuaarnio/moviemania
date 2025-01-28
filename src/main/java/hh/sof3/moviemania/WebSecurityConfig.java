@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
 import hh.sof3.moviemania.security.JwtAuthenticationFilter;
 import hh.sof3.moviemania.service.UserServiceImpl;
 
@@ -58,7 +57,9 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/api/auth/*").permitAll()
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/api/auth/login", "/api/auth/register",
+                                "/api/movies").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
