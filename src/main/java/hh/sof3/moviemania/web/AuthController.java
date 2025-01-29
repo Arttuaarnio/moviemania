@@ -4,12 +4,15 @@ import hh.sof3.moviemania.domain.AppUser;
 import hh.sof3.moviemania.security.JwtTokenUtil;
 import hh.sof3.moviemania.service.UserService;
 
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder; // Import PasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +24,7 @@ public class AuthController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
     public AuthController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil,
             UserService userService, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
@@ -38,7 +42,7 @@ public class AuthController {
 
             // Generate JWT token upon successful authentication
             String jwt = jwtTokenUtil.generateToken(authentication.getName());
-            return ResponseEntity.ok(jwt);
+            return ResponseEntity.ok().body(Map.of("token", jwt));
 
         } catch (AuthenticationException e) {
             // Handle invalid credentials
@@ -48,17 +52,10 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AppUser appUser) {
-        // Check if the user already exists
-        if (userService.findByUsername(appUser.getUsername()) != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is already taken!");
-        }
-
-        // Hash the password before saving
-        String hashedPassword = passwordEncoder.encode(appUser.getPassword());
-        appUser.setPasswordHash(hashedPassword);
-
-        // Save the new user
+        // Implement registration logic here
+        // For example, encode the password and save the user
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         userService.saveUser(appUser);
-        return ResponseEntity.ok("User registered successfully!");
+        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
     }
 }
