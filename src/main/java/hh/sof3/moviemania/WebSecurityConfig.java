@@ -42,6 +42,7 @@ public class WebSecurityConfig {
             return org.springframework.security.core.userdetails.User
                     .withUsername(user.getUsername())
                     .password(user.getPasswordHash())
+                    .roles("USER")
                     .build();
         };
     }

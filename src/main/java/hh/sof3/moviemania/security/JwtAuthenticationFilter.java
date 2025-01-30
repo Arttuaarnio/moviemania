@@ -44,16 +44,15 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
             } catch (UsernameNotFoundException e) {
                 logger.error("User not found: " + username);
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
-                return; // Don't continue the filter chain if the user is not found
+                return;
             }
         } else {
             logger.warn("Invalid or expired JWT token: " + jwt);
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
-            return; // Don't continue the filter chain if the token is invalid
+            return; 
         }
     }
     
-    // Continue the filter chain if everything is okay
     chain.doFilter(request, response);
 }
     private String getJwtFromRequest(HttpServletRequest request) {

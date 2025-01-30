@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
@@ -27,16 +29,20 @@ public class JwtTokenUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(String username) {
-        String token = Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256) // Use the new method
-                .compact();
-        logger.info("Generated JWT Token: " + token);
-        return token;
-    }
+  public String generateToken(String username) {
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("username", username);
+    
+    String token = Jwts.builder()
+            .setClaims(claims)
+            .setSubject(username)
+            .setIssuedAt(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + expiration))
+            .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+            .compact();
+    logger.info("Generated JWT Token for user: " + username);
+    return token;
+}
 
     public Boolean validateToken(String token, String username) {
         final String tokenUsername = getUsernameFromToken(token);
