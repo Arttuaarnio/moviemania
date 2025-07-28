@@ -2,6 +2,8 @@
 
 This is the backend for **MovieMania**, a community where users can register, log in, and manage a shared list of favorite movies. 
 
+The project is live [here:](https://movie-mania.live)
+
 ## Features
 
 - User authentication and registration with JWT-based authentication.
